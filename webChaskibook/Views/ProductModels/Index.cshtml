@@ -1,0 +1,98 @@
+﻿@model IEnumerable<webChaskibook.Models.ProductModels>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @using (Html.BeginForm("Buscar", "ProductModels", FormMethod.Get))
+    {
+    <p>
+        Texto a buscar: @Html.TextBox("busqueda")
+        <input type="submit" value="Buscar" />
+    </p>
+    }
+</p>
+<p>
+    @using (Html.BeginForm("VerPedido", "ProductModels", FormMethod.Get))
+    {
+    <p>
+        @Html.Hidden("idSesion", "")
+        <input type="submit" value="Ver Pedido" />
+    </p>
+    }
+    @using (Html.BeginForm("LimpiarPedido", "ProductModels", FormMethod.Get))
+    {
+    <p>
+        @Html.Hidden("idSesion", "")
+        <input type="submit" value="Limpiar Pedido" />
+    </p>
+    }
+</p>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PrecioCosto)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PrecioVenta)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UrlImagen)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Stock)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Enabled)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PrecioCosto)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PrecioVenta)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UrlImagen)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Stock)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Enabled)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id }) |
+            @*@Html.ActionLink("Agregar", "Agregar", new { id = item.Id, idSesion = item.IdSesion, id = item.Id })*@
+            @using (Html.BeginForm("Agregar", "ProductModels", FormMethod.Get))
+            {
+                <p>
+                    @Html.Hidden("hdfId", item.Id)
+                    @Html.Hidden("hdfIdSesion", "")
+                    Qty.: @Html.TextBox("cantidad","1",new { size = "3" })
+                    <input type="submit" value="Agregar" />
+                </p>
+            }
+        </td>
+    </tr>
+}
+
+</table>

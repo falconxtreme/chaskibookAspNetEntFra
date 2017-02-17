@@ -1,0 +1,144 @@
+﻿@model webChaskibook.Models.OrderModels
+
+@{
+    ViewBag.Title = "Pedido";
+}
+
+@using (Html.BeginForm("GenerarPedido", "ProductModels", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Cabecera Pedido</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <label class="control-label col-md-2">RUC/DNI</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.IdCliente, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.IdCliente, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Nombre</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NombreCliente, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NombreCliente, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Crear Pedido" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<h2>PEDIDO</h2>
+
+<div>
+    <h4>Datos</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        @*<dt>
+            Código de Cliente
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IdCliente)
+        </dd>
+
+        <dt>
+            Nombre de Cliente:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NombreCliente)
+        </dd>*@
+
+        <dt>
+            Total Precio Costo:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalPrecioCosto)
+        </dd>
+
+        <dt>
+            Total Precio Venta:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalPrecioVenta)
+        </dd>
+
+        <dt>
+            P.V. c/dscto público:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalPrecioVentaConDsctoPublico)
+        </dd>
+
+        <dt>
+            P.V. c/dscto familiar:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalPrecioVentaConDsctoFamiliar)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index") | 
+    @Html.ActionLink("PDF", "GenerarPDF",new { idSesion=""}, new { target = "_blank" })
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.lobeProducto[0].Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.lobeProducto[0].PrecioCosto)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.lobeProducto[0].PrecioVenta)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.lobeProducto[0].UrlImagen)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.lobeProducto[0].cantidadPedida)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.lobeProducto)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrecioCosto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrecioVenta)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UrlImagen)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.cantidadPedida)
+            </td>
+            <td>
+                @Html.ActionLink("Quitar Producto", "QuitarProducto", new { id = item.Id }) |
+            </td>
+        </tr>
+    }
+
+</table>

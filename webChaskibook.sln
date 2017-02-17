@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webChaskibook", "webChaskibook\webChaskibook.csproj", "{3EE9E153-0A8B-46AD-97F3-D4FD4856ACEB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "reportChaskibook", "reportChaskibook\reportChaskibook.csproj", "{775D236C-C5AC-428F-A0E7-8F1A3787017C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3EE9E153-0A8B-46AD-97F3-D4FD4856ACEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EE9E153-0A8B-46AD-97F3-D4FD4856ACEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EE9E153-0A8B-46AD-97F3-D4FD4856ACEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EE9E153-0A8B-46AD-97F3-D4FD4856ACEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{775D236C-C5AC-428F-A0E7-8F1A3787017C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{775D236C-C5AC-428F-A0E7-8F1A3787017C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{775D236C-C5AC-428F-A0E7-8F1A3787017C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{775D236C-C5AC-428F-A0E7-8F1A3787017C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
