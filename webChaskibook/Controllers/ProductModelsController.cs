@@ -179,6 +179,7 @@ namespace webChaskibook.Controllers
                     oProd = new ProductOrderModels()
                     {
                         Id = productModels.Id,
+                        IdProducto = productModels.Id,
                         Nombre =productModels.Nombre,
                         PrecioCosto =productModels.PrecioCosto,
                         PrecioVenta = productModels.PrecioVenta,
@@ -193,6 +194,7 @@ namespace webChaskibook.Controllers
                 oProd = new ProductOrderModels()
                 {
                     Id = productModels.Id,
+                    IdProducto = productModels.Id,
                     Nombre = productModels.Nombre,
                     PrecioCosto = productModels.PrecioCosto,
                     PrecioVenta = productModels.PrecioVenta,
@@ -263,7 +265,7 @@ namespace webChaskibook.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult GenerarPedido([Bind(Include = "IdCliente, NombreCliente")] OrderModels orderModels)
+        public ActionResult GenerarPedido([Bind(Include = "IdCliente, NombreCliente, Direccion, FechaDiaEntrega, HoraEntrega")] OrderModels orderModels)
         {
             List<ProductOrderModels> lobeProdsPedido = (List<ProductOrderModels>)Session["lobeProdsPedido"];
             orderModels.lobeProducto = lobeProdsPedido;
@@ -281,12 +283,13 @@ namespace webChaskibook.Controllers
             {
                 db.OrderModels.Add(orderModels);
                 db.SaveChanges();
+                lobeProdsPedido = (List<ProductOrderModels>)Session["lobeProdsPedido"];
                 if (lobeProdsPedido != null)
                 {
                     ProductModels oProdUpd;
                     foreach(ProductOrderModels oProd in lobeProdsPedido)
                     {
-                        oProdUpd = db.ProductModels.Find(oProd.Id);
+                        oProdUpd = db.ProductModels.Find(oProd.IdProducto);
                         if (oProdUpd != null)
                         {
                             oProdUpd.Stock -= oProd.cantidadPedida;

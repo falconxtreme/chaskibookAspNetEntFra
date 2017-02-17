@@ -8,6 +8,7 @@ namespace webChaskibook.Models
     public class ProductOrderModels
     {
         public int Id { get; set; }
+        public int IdProducto { get; set; }
         public string Nombre { get; set; }
         public decimal PrecioCosto { get; set; }
         public decimal PrecioVenta { get; set; }

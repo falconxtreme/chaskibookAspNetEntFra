@@ -10,6 +10,9 @@ namespace webChaskibook.Models
         public int Id { get; set; }
         public string IdCliente { get; set; }
         public string NombreCliente { get; set; }
+        public string Direccion { get; set; }
+        public string FechaDiaEntrega { get; set; }
+        public string HoraEntrega { get; set; }
         public decimal PrecioCosto { get; set; }
         public decimal PrecioSinIGV { get; set; }
         public decimal IGV { get; set; }

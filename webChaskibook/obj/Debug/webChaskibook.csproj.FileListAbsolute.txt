@@ -98,7 +98,6 @@ C:\BCTS\Chaskibook\webChaskibook\webChaskibook\bin\es\Microsoft.Owin.Security.Tw
 C:\BCTS\Chaskibook\webChaskibook\webChaskibook\bin\es\Microsoft.Owin.Security.MicrosoftAccount.resources.dll
 C:\BCTS\Chaskibook\webChaskibook\webChaskibook\obj\Debug\webChaskibook.dll
 C:\BCTS\Chaskibook\webChaskibook\webChaskibook\obj\Debug\webChaskibook.pdb
-C:\BCTS\Chaskibook\webChaskibook\webChaskibook\obj\Debug\webChaskibook.csprojResolveAssemblyReference.cache
 C:\BCTS\Chaskibook\webChaskibook\webChaskibook\bin\Microsoft.ReportViewer.WebForms.dll
 C:\BCTS\Chaskibook\webChaskibook\webChaskibook\bin\de\Microsoft.ReportViewer.WebForms.resources.dll
 C:\BCTS\Chaskibook\webChaskibook\webChaskibook\bin\es\Microsoft.ReportViewer.WebForms.resources.dll
