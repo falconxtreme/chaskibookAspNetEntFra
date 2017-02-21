@@ -216,6 +216,8 @@ namespace webChaskibook.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Session["lobeProdsPedido"] = null;
+            Session["orderModels"] = null;
+            Session["lobeProdNoExistente"] = null;
             return RedirectToAction("Index", "ProductModels", new { strBus = "", idSesion = idSesion });
         }
 
@@ -371,5 +373,186 @@ namespace webChaskibook.Controllers
 
         }
 
+        public ActionResult VerificarStock(string idSesion = "")
+        {
+            try
+            {
+                LocalReport lr = new LocalReport();
+                List<ProductOrderModels> lobeProdsPedido = (List<ProductOrderModels>)Session["lobeProdsPedido"];
+                lobeProdsPedido = FiltrarProdsSinStock(lobeProdsPedido);
+                if (lobeProdsPedido!=null && lobeProdsPedido.Count > 0)
+                {
+                    OrderModels order;
+                    order = (OrderModels)Session["orderModels"];
+                    if (order == null)
+                    {
+                        order = new OrderModels();
+                        order.lobeProducto = lobeProdsPedido;
+                    }
+
+                    List<OrderModels> lobeOrder = new List<OrderModels>();
+                    lobeOrder.Add(order);
+
+                    string rutaRep = ConfigurationManager.AppSettings["RutaReportePedido"].ToString();
+                    lr.EnableExternalImages = true;
+                    lr.ReportPath = rutaRep;
+
+                    lr.DataSources.Add(new ReportDataSource("DataSet1", lobeOrder));
+                    lr.DataSources.Add(new ReportDataSource("DataSet2", lobeProdsPedido));
+
+                    string reportType;
+                    string format = "PDF";
+                    if (format == null || format == "" || format == "jpeg")
+                    {
+                        reportType = "Image";
+                        format = "jpeg";
+                    }
+                    else
+                    {
+                        reportType = format;
+                    }
+                    string mimeType;
+                    string encoding;
+                    string fileNameExtension;
+                    //string deviceInfo;
+                    string deviceInfo = "<DeviceInfo>" +
+                                    "   <OutputFormat>" + format + "</OutputFormat>" +
+                                    "  <PageWidth>9in</PageWidth>" +
+                                    "  <PageHeight>12in</PageHeight>" +
+                                    //"  <MarginTop>0.5in</MarginTop>" +
+                                    "  <MarginLeft>0.75in</MarginLeft>" +
+                                    //"  <MarginRight>1in</MarginRight>" +
+                                    //"  <MarginBottom>0.5in</MarginBottom>" +
+                                    "</DeviceInfo>";
+                    Warning[] warnings = null;
+                    string[] streams = null;
+                    byte[] renderedBytes = null;
+
+                    renderedBytes = lr.Render(reportType, deviceInfo, out mimeType, out encoding, out fileNameExtension, out streams, out warnings);
+                    return File(renderedBytes, mimeType);
+                }
+                return RedirectToAction("VerPedido", "ProductModels", new { idSesion = "" });
+            }
+            catch(Exception ex)
+            {
+                return RedirectToAction("VerPedido", "ProductModels", new { idSesion = "" });
+            }
+        }
+
+        private List<ProductOrderModels> FiltrarProdsSinStock(List<ProductOrderModels> lobeProd)
+        {
+            if (lobeProd != null)
+            {
+                List<ProductOrderModels> lobeProdFiltrada = new List<ProductOrderModels>();
+                ProductModels oProdOri;
+                ProductOrderModels oProdNuevo;
+                foreach(ProductOrderModels oProd in lobeProd)
+                {
+                    oProdOri = db.ProductModels.Find(oProd.IdProducto);
+                    if (oProd.cantidadPedida > oProdOri.Stock)
+                    {
+                        oProdNuevo = new ProductOrderModels() {cantidadPedida= oProd.cantidadPedida- oProdOri.Stock, Id=0,
+                            IdProducto =oProd.IdProducto, Nombre=oProd.Nombre, PrecioCosto=oProd.PrecioCosto,
+                            PrecioVenta = oProd.PrecioVenta
+                        };
+                        lobeProdFiltrada.Add(oProdNuevo);
+                    }
+                }
+                return lobeProdFiltrada;
+            }
+            return null;
+        }
+
+        // GET: ProductModels
+        public ActionResult AgregarNota(string prodNoExistente)
+        {
+            List<ProductOrderModels> lobeProdNoExistente =(List<ProductOrderModels>) Session["lobeProdNoExistente"];
+            ProductOrderModels oProd = new ProductOrderModels()
+            {
+                Id = 0,
+                IdProducto=0,
+                Nombre = prodNoExistente,
+                cantidadPedida = 0,
+                UrlImagen = "",
+                PrecioCosto = 0,
+                PrecioVenta = 0
+            };
+            if (lobeProdNoExistente != null)
+            {
+                lobeProdNoExistente.Add(oProd);
+            }else
+            {
+                lobeProdNoExistente = new List<ProductOrderModels>();
+                lobeProdNoExistente.Add(oProd);
+            }
+            Session["lobeProdNoExistente"] = lobeProdNoExistente;
+            return RedirectToAction("Index", "ProductModels", new { strBus = "" });
+            //return RedirectToAction("Index",  prods.ToList());
+        }
+
+        public ActionResult ProductosNoExistentesPDF(string idSesion = "")
+        {
+            try
+            {
+                LocalReport lr = new LocalReport();
+                List<ProductOrderModels> lobeProdNoExistente = (List<ProductOrderModels>)Session["lobeProdNoExistente"];
+                if (lobeProdNoExistente != null && lobeProdNoExistente.Count > 0)
+                {
+                    OrderModels order;
+                    order = (OrderModels)Session["orderModels"];
+                    if (order == null)
+                    {
+                        order = new OrderModels();
+                        order.lobeProducto = lobeProdNoExistente;
+                    }
+
+                    List<OrderModels> lobeOrder = new List<OrderModels>();
+                    lobeOrder.Add(order);
+
+                    string rutaRep = ConfigurationManager.AppSettings["RutaReportePedido"].ToString();
+                    lr.EnableExternalImages = true;
+                    lr.ReportPath = rutaRep;
+
+                    lr.DataSources.Add(new ReportDataSource("DataSet1", lobeOrder));
+                    lr.DataSources.Add(new ReportDataSource("DataSet2", lobeProdNoExistente));
+
+                    string reportType;
+                    string format = "PDF";
+                    if (format == null || format == "" || format == "jpeg")
+                    {
+                        reportType = "Image";
+                        format = "jpeg";
+                    }
+                    else
+                    {
+                        reportType = format;
+                    }
+                    string mimeType;
+                    string encoding;
+                    string fileNameExtension;
+                    //string deviceInfo;
+                    string deviceInfo = "<DeviceInfo>" +
+                                    "   <OutputFormat>" + format + "</OutputFormat>" +
+                                    "  <PageWidth>9in</PageWidth>" +
+                                    "  <PageHeight>12in</PageHeight>" +
+                                    //"  <MarginTop>0.5in</MarginTop>" +
+                                    "  <MarginLeft>0.75in</MarginLeft>" +
+                                    //"  <MarginRight>1in</MarginRight>" +
+                                    //"  <MarginBottom>0.5in</MarginBottom>" +
+                                    "</DeviceInfo>";
+                    Warning[] warnings = null;
+                    string[] streams = null;
+                    byte[] renderedBytes = null;
+
+                    renderedBytes = lr.Render(reportType, deviceInfo, out mimeType, out encoding, out fileNameExtension, out streams, out warnings);
+                    return File(renderedBytes, mimeType);
+                }
+                return RedirectToAction("VerPedido", "ProductModels", new { idSesion = "" });
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("VerPedido", "ProductModels", new { idSesion = "" });
+            }
+        }
     }
 }

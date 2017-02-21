@@ -14,6 +14,15 @@
         <input type="submit" value="Buscar" />
     </p>
     }
+    </p>
+<p>
+    @using (Html.BeginForm("AgregarNota", "ProductModels", FormMethod.Get))
+    {
+    <p>
+        Producto no existente: @Html.TextBox("prodNoExistente")
+        <input type="submit" value="Agregar" />
+    </p>
+    }
 </p>
 <p>
     @using (Html.BeginForm("VerPedido", "ProductModels", FormMethod.Get))
@@ -32,7 +41,8 @@
     }
 </p>
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create") | 
+    @Html.ActionLink("Productos No Existentes", "ProductosNoExistentesPDF", new { idSesion = "" }, new { target = "_blank" })
 </p>
 <table class="table">
     <tr>

@@ -109,3 +109,4 @@ C:\BCTS\Chaskibook\webChaskibook\webChaskibook\bin\pt\Microsoft.ReportViewer.Web
 C:\BCTS\Chaskibook\webChaskibook\webChaskibook\bin\ru\Microsoft.ReportViewer.WebForms.resources.dll
 C:\BCTS\Chaskibook\webChaskibook\webChaskibook\bin\zh-CHS\Microsoft.ReportViewer.WebForms.resources.dll
 C:\BCTS\Chaskibook\webChaskibook\webChaskibook\bin\zh-CHT\Microsoft.ReportViewer.WebForms.resources.dll
+C:\BCTS\Chaskibook\webChaskibook\webChaskibook\obj\Debug\webChaskibook.csprojResolveAssemblyReference.cache
