@@ -63,6 +63,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Reports\Cotizacion.rdlc" />
+    <EmbeddedResource Include="Reports\Solicitud.rdlc" />
     <EmbeddedResource Include="Reports\Pedido.rdlc" />
     <None Include="Properties\DataSources\webChaskibook.Models.OrderModels.datasource" />
     <None Include="Properties\DataSources\webChaskibook.Models.ProductModels.datasource" />

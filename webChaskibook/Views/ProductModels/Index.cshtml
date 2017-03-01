@@ -97,7 +97,8 @@
                 <p>
                     @Html.Hidden("hdfId", item.Id)
                     @Html.Hidden("hdfIdSesion", "")
-                    Qty.: @Html.TextBox("cantidad","1",new { size = "3" })
+                    Adic.: @Html.TextBox("desAdicional", "", new { size = "3" })
+                    Qty.: @Html.TextBox("cantidad","1",new { size = "3", maxlength="3" })
                     <input type="submit" value="Agregar" />
                 </p>
             }

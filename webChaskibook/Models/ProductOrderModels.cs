@@ -10,6 +10,7 @@ namespace webChaskibook.Models
         public int Id { get; set; }
         public int IdProducto { get; set; }
         public string Nombre { get; set; }
+        public string DescripcionAdicional { get; set; }
         public decimal PrecioCosto { get; set; }
         public decimal PrecioVenta { get; set; }
         public string UrlImagen { get; set; }        

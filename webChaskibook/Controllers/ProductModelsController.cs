@@ -153,7 +153,7 @@ namespace webChaskibook.Controllers
         }
 
         // GET: ProductModels/Delete/5
-        public ActionResult Agregar(int? hdfId, string hdfIdSesion = "",int cantidad=1)
+        public ActionResult Agregar(int? hdfId, string hdfIdSesion = "", string desAdicional="" , int cantidad=1)
         {
             if (hdfId == null)
             {
@@ -181,6 +181,7 @@ namespace webChaskibook.Controllers
                         Id = productModels.Id,
                         IdProducto = productModels.Id,
                         Nombre =productModels.Nombre,
+                        DescripcionAdicional= desAdicional,
                         PrecioCosto =productModels.PrecioCosto,
                         PrecioVenta = productModels.PrecioVenta,
                         UrlImagen = productModels.UrlImagen,
@@ -196,6 +197,7 @@ namespace webChaskibook.Controllers
                     Id = productModels.Id,
                     IdProducto = productModels.Id,
                     Nombre = productModels.Nombre,
+                    DescripcionAdicional = desAdicional,
                     PrecioCosto = productModels.PrecioCosto,
                     PrecioVenta = productModels.PrecioVenta,
                     UrlImagen = productModels.UrlImagen,
@@ -279,8 +281,8 @@ namespace webChaskibook.Controllers
             {
                 decimal.TryParse(ConfigurationManager.AppSettings["IGV"].ToString(),out dIGV);
             }
-            orderModels.IGV = Math.Round(orderModels.PrecioFinal / (1+dIGV),2,MidpointRounding.AwayFromZero);
-            orderModels.PrecioSinIGV = Math.Round( orderModels.PrecioFinal - orderModels.IGV, 2, MidpointRounding.AwayFromZero);
+            orderModels.PrecioSinIGV = Math.Round(orderModels.PrecioFinal / (1+dIGV),2,MidpointRounding.AwayFromZero);
+            orderModels.IGV = Math.Round( orderModels.PrecioFinal - orderModels.PrecioSinIGV, 2, MidpointRounding.AwayFromZero);
             if (ModelState.IsValid)
             {
                 db.OrderModels.Add(orderModels);
@@ -328,7 +330,7 @@ namespace webChaskibook.Controllers
                 List<OrderModels> lobeOrder = new List<OrderModels>();
                 lobeOrder.Add(order);
 
-                string rutaRep = ConfigurationManager.AppSettings["RutaReportePedido"].ToString();
+                string rutaRep = ConfigurationManager.AppSettings["RutaReporteSolicitud"].ToString();
                 lr.EnableExternalImages = true;
                 lr.ReportPath = rutaRep;
 
