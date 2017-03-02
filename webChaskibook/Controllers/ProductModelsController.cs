@@ -174,7 +174,9 @@ namespace webChaskibook.Controllers
                 if (oProd != null)
                 {
                     oProd.cantidadPedida += cantidad;
-                }else
+                    oProd.DescripcionAdicional += "-" + desAdicional;
+                }
+                else
                 {
                     oProd = new ProductOrderModels()
                     {
@@ -267,9 +269,7 @@ namespace webChaskibook.Controllers
             return RedirectToAction("VerPedido", "ProductModels", new { idSesion = "" });
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult GenerarPedido([Bind(Include = "IdCliente, NombreCliente, Direccion, FechaDiaEntrega, HoraEntrega")] OrderModels orderModels)
+        public ActionResult GenerarPedido(OrderModels orderModels)
         {
             List<ProductOrderModels> lobeProdsPedido = (List<ProductOrderModels>)Session["lobeProdsPedido"];
             orderModels.lobeProducto = lobeProdsPedido;
@@ -373,6 +373,96 @@ namespace webChaskibook.Controllers
                 return RedirectToAction("VerPedido", "ProductModels", new { idSesion = "" });
             }
 
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult GenerarReciboFicticioOPedido(string IdCliente = "", string NombreCliente = "", string Direccion = "",
+            string FechaDiaEntrega = "", string HoraEntrega = "", string DescripcionVenta="", decimal PrecioTotalVenta=0, 
+            bool EsPedido = false, bool EsCotizacion= false)
+        {
+            try
+            {
+                if (EsCotizacion)
+                {
+                    return null;
+                }
+                else if(EsPedido)
+                {
+                    OrderModels oOrder = new OrderModels()
+                    {
+                        IdCliente = IdCliente,
+                        NombreCliente = NombreCliente,
+                        Direccion = Direccion,
+                        FechaDiaEntrega = FechaDiaEntrega,
+                        HoraEntrega = HoraEntrega
+                    };
+                    return GenerarPedido(oOrder);
+                }
+                else
+                {
+                    return GenerarPDFReciboFicticio(IdCliente,NombreCliente, Direccion, FechaDiaEntrega, 
+                        HoraEntrega, DescripcionVenta, PrecioTotalVenta);
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("VerPedido", "ProductModels", new { idSesion = "" });
+            }
+
+        }
+
+        public ActionResult GenerarPDFReciboFicticio(string IdCliente = "", string NombreCliente = "", string Direccion = "",
+            string FechaDiaEntrega = "", string HoraEntrega = "", string DescripcionVenta = "", decimal PrecioTotalVenta = 0)
+        {
+            LocalReport lr = new LocalReport();
+           
+
+            string rutaRep = ConfigurationManager.AppSettings["RutaReporteRecibo"].ToString();
+            lr.EnableExternalImages = true;
+            lr.ReportPath = rutaRep;
+
+            List<ProductOrderModels> lobeProdsPedido = (List<ProductOrderModels>)Session["lobeProdsPedido"];
+            lr.DataSources.Add(new ReportDataSource("DataSet1", lobeProdsPedido));
+            lr.SetParameters(new ReportParameter("NroPedido", IdCliente));
+            lr.SetParameters(new ReportParameter("NombreCliente", NombreCliente));
+            lr.SetParameters(new ReportParameter("DireccionCliente", Direccion));
+            lr.SetParameters(new ReportParameter("DiaFechaEntrega", FechaDiaEntrega));
+            lr.SetParameters(new ReportParameter("HoraEntrega", HoraEntrega));
+            lr.SetParameters(new ReportParameter("DescripcionVenta", DescripcionVenta));
+            lr.SetParameters(new ReportParameter("PrecioVentaTotal", PrecioTotalVenta.ToString()));
+
+            string reportType;
+            string format = "PDF";
+            if (format == null || format == "" || format == "jpeg")
+            {
+                reportType = "Image";
+                format = "jpeg";
+            }
+            else
+            {
+                reportType = format;
+            }
+            string mimeType;
+            string encoding;
+            string fileNameExtension;
+            //string deviceInfo;
+            string deviceInfo = "<DeviceInfo>" +
+                            "   <OutputFormat>" + format + "</OutputFormat>" +
+                            "  <PageWidth>9in</PageWidth>" +
+                            "  <PageHeight>12in</PageHeight>" +
+                            //"  <MarginTop>0.5in</MarginTop>" +
+                            "  <MarginLeft>0.75in</MarginLeft>" +
+                            //"  <MarginRight>1in</MarginRight>" +
+                            //"  <MarginBottom>0.5in</MarginBottom>" +
+                            "</DeviceInfo>";
+            Warning[] warnings = null;
+            string[] streams = null;
+            byte[] renderedBytes = null;
+
+            renderedBytes = lr.Render(reportType, deviceInfo, out mimeType, out encoding, out fileNameExtension, out streams, out warnings);
+            return File(renderedBytes, mimeType);
         }
 
         public ActionResult VerificarStock(string idSesion = "")

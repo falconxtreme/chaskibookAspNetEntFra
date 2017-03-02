@@ -4,7 +4,7 @@
     ViewBag.Title = "Pedido";
 }
 
-@using (Html.BeginForm("GenerarPedido", "ProductModels", FormMethod.Post))
+@using (Html.BeginForm("GenerarReciboFicticioOPedido", "ProductModels", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
@@ -49,6 +49,34 @@
             <div class="col-md-8">
                 @Html.EditorFor(model => model.HoraEntrega, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.HoraEntrega, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">Descripción de Venta</label>
+            <div class="col-md-8">
+                <input type="text" class="form-control" id="DescripcionVenta" name="DescripcionVenta" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">Precio Total Venta</label>
+            <div class="col-md-8">
+                <input type="text" class="form-control" id="PrecioTotalVenta" name="PrecioTotalVenta" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">Es Pedido</label>
+            <div class="col-md-8">
+                <input type="checkbox" class="form-control" id="EsPedido" name="EsPedido" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">Es Cotizacion</label>
+            <div class="col-md-8">
+                <input type="checkbox" class="form-control" id="EsCotizacion" name="EsCotizacion" />
             </div>
         </div>
 
