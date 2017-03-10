@@ -379,15 +379,15 @@ namespace webChaskibook.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult GenerarReciboFicticioOPedido(string IdCliente = "", string NombreCliente = "", string Direccion = "",
             string FechaDiaEntrega = "", string HoraEntrega = "", string DescripcionVenta="", decimal PrecioTotalVenta=0, 
-            bool EsPedido = false, bool EsCotizacion= false)
+            string EsPedido = "", string EsCotizacion= "")
         {
             try
             {
-                if (EsCotizacion)
+                if (EsCotizacion=="on")
                 {
                     return null;
                 }
-                else if(EsPedido)
+                else if(EsPedido=="on")
                 {
                     OrderModels oOrder = new OrderModels()
                     {
